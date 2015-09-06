@@ -2,12 +2,20 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.example.efradelos.divein.MainActivity">
+    <item android:id="@+id/action_divers"
+          android:title="@string/action_divers"
+          android:orderInCategory="1"
+          app:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_dives"
+          android:title="@string/action_dives"
+          android:orderInCategory="2"
+          app:showAsAction="ifRoom"/>
     <item android:id="@+id/action_settings"
           android:title="@string/action_settings"
           android:orderInCategory="100"
           app:showAsAction="never"/>
     <item android:id="@+id/action_sign_out"
           android:title="@string/action_sign_out"
-          android:orderInCategory="100"
+          android:orderInCategory="101"
           app:showAsAction="never"/>
 </menu>

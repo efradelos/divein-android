@@ -1,9 +1,13 @@
 package com.example.efradelos.divein;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.example.efradelos.divein.divers.DiversActivity;
+import com.example.efradelos.divein.dives.DivesActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,8 +32,23 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        if(id == R.id.action_divers) {
+            startActivity(new Intent(this, DiversActivity.class));
+            return true;
+        }
+
+        if(id == R.id.action_dives) {
+            startActivity(new Intent(this, DivesActivity.class));
+            return true;
+        }
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+
+        if (id == R.id.action_sign_out) {
+            Constants.FIREBASE_REF.unauth();
+            startActivity(new Intent(this, LoginActivity.class));
             return true;
         }
 

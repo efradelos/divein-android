@@ -9,38 +9,31 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.couchbase.lite.Document;
+import com.couchbase.lite.LiveQuery;
+import com.couchbase.lite.QueryRow;
 import com.example.efradelos.divein.R;
-import com.example.efradelos.divein.adapters.FirebaseListAdapter;
-import com.firebase.client.Query;
+import com.example.efradelos.divein.adapters.CouchListAdapter;
+import com.example.efradelos.divein.documents.Diver;
 
-/**
- * Created by efradelos on 8/31/15.
- */
-public class DiverAdapter extends FirebaseListAdapter<Diver> {
-    public DiverAdapter(Activity activity, int modelLayout, Query ref) {
-        super(activity, Diver.class, modelLayout, ref);
+public class DiverAdapter extends CouchListAdapter {
+    public DiverAdapter(Activity activity, int modelLayout, LiveQuery query) {
+        super(activity, modelLayout, query);
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        View adapterView = super.getView(i, view, viewGroup);
-        return adapterView;
-    }
-
-    @Override
-
-    protected void populateView(View view, Diver diver) {
-        ((TextView)view.findViewById(R.id.list_item_full_name)).setText(diver.getLastName() + ", " + diver.getFirstName());
+    protected void populateView(View view, Document doc) {
+        Diver diver = Diver.createFromDocument(doc);
+        ((TextView)view.findViewById(R.id.list_item_full_name)).setText(diver.getFirstName() + ", " + diver.getLastName());
         ((TextView)view.findViewById(R.id.list_item_year)).setText(diver.getYear());
-        String avatar = diver.getAvatar();
-        if (avatar != null) {
-            String avatarString = diver.getAvatar();
-            int commaIndex = avatarString.indexOf(',');
-            String decode = avatarString.substring(commaIndex);
-            byte[] decodedString = Base64.decode(decode, Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            ((ImageView) view.findViewById(R.id.list_item_avatar)).setImageBitmap(decodedByte);
-        }
-
+//        String avatar = diver.getAvatar();
+//        if (avatar != null) {
+//            String avatarString = diver.getAvatar();
+//            int commaIndex = avatarString.indexOf(',');
+//            String decode = avatarString.substring(commaIndex);
+//            byte[] decodedString = Base64.decode(decode, Base64.DEFAULT);
+//            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+//            ((ImageView) view.findViewById(R.id.list_item_avatar)).setImageBitmap(decodedByte);
+//        }
     }
 }

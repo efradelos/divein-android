@@ -11,8 +11,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.couchbase.lite.Database;
+import com.example.efradelos.divein.Application;
 import com.example.efradelos.divein.R;
-import com.firebase.client.Firebase;
+import com.example.efradelos.divein.data.DiveInContract;
+import com.example.efradelos.divein.documents.*;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -31,16 +34,16 @@ public class DiversFragment
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_divers, container, false);
 
-        Firebase.setAndroidContext(getActivity());
-
-        Firebase ref = new Firebase("https://divein.firebaseio.com").child("divers");
-        mDiverAdapter = new DiverAdapter(getActivity(), R.layout.list_item_diver, ref);
+        Database database = ((Application)getActivity().getApplication()).getDatabaseInstance();
+        mDiverAdapter = new DiverAdapter(getActivity(), R.layout.list_item_diver, com.example.efradelos.divein.documents.Diver.getQuery(database).toLiveQuery());
         mListViewDivers = (ListView)rootView.findViewById(R.id.listview_divers);
         mListViewDivers.setAdapter(mDiverAdapter);
         mListViewDivers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), DiverActivity.class).setData(Uri.parse("geo:122"));
+                Diver diver = Diver.createFromDocument(mDiverAdapter.getItem(position));
+                Uri diverUri = DiveInContract.DIVERS_URI.buildUpon().appendPath(diver.getId()).build();
+                Intent intent = new Intent(getActivity(), DiverActivity.class).setData(diverUri);
                 startActivity(intent);
             }
         });

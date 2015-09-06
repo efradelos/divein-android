@@ -1,5 +1,6 @@
 package com.example.efradelos.divein.divers;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -30,8 +31,9 @@ public class DiversActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_new_diver) {
+            Intent intent = new Intent(this, DiverActivity.class);
+            startActivity(intent);
             return true;
         }
 

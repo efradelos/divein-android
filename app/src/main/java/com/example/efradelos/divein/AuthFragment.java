@@ -14,6 +14,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.identity.intents.AddressConstants;
 import com.google.android.gms.plus.Plus;
 
 public class AuthFragment extends Fragment
@@ -51,14 +52,17 @@ public class AuthFragment extends Fragment
                 .addApi(Plus.API)
                 .addScope(new Scope(Scopes.PLUS_LOGIN))
                 .build();
-        Log.d(LOG_TAG, "Created!");
-
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
+        AuthData authData = Constants.FIREBASE_REF.getAuth();
+        if(authData != null) {
+            if(mSignInListener != null) mSignInListener.signInSucceeded();
+        } else {
+            mGoogleApiClient.connect();
+        }
     }
 
     @Override
