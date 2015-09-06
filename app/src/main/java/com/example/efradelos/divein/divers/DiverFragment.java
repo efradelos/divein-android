@@ -19,6 +19,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import com.couchbase.lite.CouchbaseLiteException;
+import com.couchbase.lite.Database;
+import com.example.efradelos.divein.Application;
 import com.example.efradelos.divein.Constants;
 import com.example.efradelos.divein.R;
 import com.example.efradelos.divein.documents.Diver;
@@ -35,10 +38,16 @@ import java.util.Date;
  * A placeholder fragment containing a simple view.
  */
 public class DiverFragment extends Fragment {
+    private static final String LOG_TAG = "EFX";
     private static final int REQUEST_TAKE_PHOTO = 100;
 
     private Diver mDiver;
     private String mImagePathToBeAttached;
+    private EditText mFirstNameField;
+    private EditText mLastNameField;
+    private ImageView mAvatarField;
+
+    private Database mDatabase;
 
     public DiverFragment() {
     }
@@ -46,20 +55,20 @@ public class DiverFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mDatabase = ((Application) getActivity().getApplication()).getDatabaseInstance();
         Uri diverUri = getActivity().getIntent().getData();
         if(diverUri != null) {
-            Log.i("EFX", diverUri.getLastPathSegment());
+            mDiver = Diver.createFromDocument(mDatabase.getDocument(diverUri.getLastPathSegment()));
         } else {
             mDiver = new Diver();
-            mDiver.setLastName("Peterson");
-            mDiver.setFirstName("Tom");
-            mDiver.setYear("Sophormore");
         }
 
         View rootView = inflater.inflate(R.layout.fragment_diver, container, false);
-        ImageView avatar = (ImageView)rootView.findViewById(R.id.avatar);
+        mFirstNameField = ((EditText)rootView.findViewById(R.id.first_name));
+        mLastNameField = ((EditText)rootView.findViewById(R.id.last_name));
+        mAvatarField = (ImageView)rootView.findViewById(R.id.avatar);
 
-        avatar.setOnLongClickListener(new View.OnLongClickListener() {
+        mAvatarField.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 dispatchTakePhotoIntent();
@@ -119,7 +128,13 @@ public class DiverFragment extends Fragment {
     }
 
     private void save() {
-
+        mDiver.setFirstName(mFirstNameField.getText().toString());
+        mDiver.setLastName(mLastNameField.getText().toString());
+        try {
+            mDiver.save(mDatabase);
+        } catch(CouchbaseLiteException e) {
+            Log.e(LOG_TAG, "Unable to save diver", e);
+        }
     }
 
     private File createImageFile() throws IOException {
@@ -143,11 +158,12 @@ public class DiverFragment extends Fragment {
 
     protected void populate(Diver diver) {
         View view = getView();
-        ((EditText)view.findViewById(R.id.first_name)).setText(diver.getFirstName());
-        ((EditText)view.findViewById(R.id.last_name)).setText(diver.getLastName());
+        mFirstNameField.setText(diver.getFirstName());
+        mLastNameField.setText(diver.getLastName());
+//        mYearField.setText(diver.getYear());
         Bitmap avatar = diver.getAvatar();
         if(avatar != null) {
-            ((ImageView) view.findViewById(R.id.avatar)).setImageBitmap(avatar);
+            mAvatarField.setImageBitmap(avatar);
         }
     }
 }

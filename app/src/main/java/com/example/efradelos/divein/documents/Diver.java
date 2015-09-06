@@ -1,28 +1,36 @@
 package com.example.efradelos.divein.documents;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
+import com.couchbase.lite.Attachment;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
 import com.couchbase.lite.Emitter;
 import com.couchbase.lite.Mapper;
 import com.couchbase.lite.Query;
+import com.couchbase.lite.Revision;
 import com.couchbase.lite.View;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Diver {
+public class Diver extends DocumentBase {
+    private static final String LOG_TAG = "Diver";
     private static final String VIEW_NAME = "divers";
     private static final String DOC_TYPE = "dive";
     public static final String PROP_FIRST_NAME = "first_name";
     public static final String PROP_LAST_NAME = "last_name";
     public static final String PROP_YEAR = "year";
+    public static final String PROP_AVATAR = "avatar";
 
-    private String id;
     private String firstName;
     private String lastName;
     private String year;
@@ -30,10 +38,19 @@ public class Diver {
 
     public static Diver createFromDocument(Document doc) {
         Diver diver = new Diver();
-        diver.id = doc.getId();
+        diver.mId = doc.getId();
         diver.lastName = (String) doc.getProperty(PROP_FIRST_NAME);
         diver.firstName = (String) doc.getProperty(PROP_LAST_NAME);
         diver.year = (String) doc.getProperty(PROP_YEAR);
+        Revision rev = doc.getCurrentRevision();
+        com.couchbase.lite.Attachment att = rev.getAttachment(PROP_AVATAR);
+        if (att != null) {
+            try {
+                diver.avatar = BitmapFactory.decodeStream(att.getContent());
+            } catch(CouchbaseLiteException e) {
+                Log.e(LOG_TAG, "Unable to retrieve avatar", e);
+            }
+        }
         return diver;
     }
 
@@ -60,23 +77,26 @@ public class Diver {
         return query;
     }
 
-    public static Document create(Database database, String first_name, String last_name, String year) throws CouchbaseLiteException {
-        Document document = database.createDocument();
-
-        Map<String, Object> properties = new HashMap<>();
+    public HashMap<String, Object> getProperties() {
+        HashMap<String, Object> properties = new HashMap<>();
         properties.put("type", DOC_TYPE);
-        properties.put(PROP_FIRST_NAME, first_name);
-        properties.put(PROP_LAST_NAME, last_name);
-        properties.put(PROP_YEAR, year);
-
-        // Save the properties to the document
-        document.putProperties(properties);
-
-        return document;
+        properties.put(PROP_FIRST_NAME, getFirstName());
+        properties.put(PROP_LAST_NAME, getLastName());
+        properties.put(PROP_YEAR, getYear());
+        return properties;
     }
 
-    public String getId() {
-        return id;
+    public Iterable<Attachment> getAttachments() {
+        if (avatar == null) return null;
+
+        ArrayList<Attachment> attachments = new ArrayList<>();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        avatar.compress(Bitmap.CompressFormat.PNG, 100, bos);
+        byte[] bitmapdata = bos.toByteArray();
+        ByteArrayInputStream bs = new ByteArrayInputStream(bitmapdata);
+
+        attachments.add(new Attachment(PROP_AVATAR, "image/jpeg", bs));
+        return attachments;
     }
 
     public String getFirstName() {

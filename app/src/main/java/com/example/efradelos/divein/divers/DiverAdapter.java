@@ -26,14 +26,9 @@ public class DiverAdapter extends CouchListAdapter {
         Diver diver = Diver.createFromDocument(doc);
         ((TextView)view.findViewById(R.id.list_item_full_name)).setText(diver.getFirstName() + ", " + diver.getLastName());
         ((TextView)view.findViewById(R.id.list_item_year)).setText(diver.getYear());
-//        String avatar = diver.getAvatar();
-//        if (avatar != null) {
-//            String avatarString = diver.getAvatar();
-//            int commaIndex = avatarString.indexOf(',');
-//            String decode = avatarString.substring(commaIndex);
-//            byte[] decodedString = Base64.decode(decode, Base64.DEFAULT);
-//            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-//            ((ImageView) view.findViewById(R.id.list_item_avatar)).setImageBitmap(decodedByte);
-//        }
+        Bitmap avatar = diver.getAvatar();
+        if (avatar != null) {
+            ((ImageView) view.findViewById(R.id.list_item_avatar)).setImageBitmap(avatar);
+        }
     }
 }
