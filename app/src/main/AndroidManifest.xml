@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +16,10 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,41 +28,13 @@
         </activity>
 
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
-        </activity>
-
-        <activity
-            android:name=".dives.DivesActivity"
-            android:label="@string/title_activity_dives"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.efradelos.divein.MainActivity" />
-        </activity>
-        <activity
-            android:name=".divers.DiversActivity"
-            android:label="@string/title_activity_divers"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.efradelos.divein.MainActivity" />
-        </activity>
-        <activity
             android:name=".divers.DiverActivity"
             android:label="@string/title_activity_diver"
-            android:parentActivityName=".divers.DiversActivity" >
+            android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.efradelos.divein.divers.DiversActivity" />
+                android:value=".MainActivity" />
         </activity>
-
-        <provider
-            android:name=".data.DiveInProvider"
-            android:authorities="com.example.android.divein" >
-        </provider>
-
     </application>
 
 </manifest>
-

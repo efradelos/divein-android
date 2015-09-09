@@ -1,13 +1,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.example.efradelos.divein.MainActivity">
+    <item android:id="@+id/action_add"
+          android:title="@string/action_add"
+          android:icon="@drawable/plus"
+          android:orderInCategory="1"
+          android:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/action_add_diver"
+                android:title="@string/action_divers" />
+            <item
+                android:id="@+id/action_add_dive"
+                android:title="@string/action_dives" />
+        </menu>
+    </item>
     <item android:id="@+id/action_settings"
           android:title="@string/action_settings"
           android:orderInCategory="100"
-          app:showAsAction="never"/>
+          android:showAsAction="never"/>
     <item android:id="@+id/action_sign_out"
           android:title="@string/action_sign_out"
           android:orderInCategory="100"
-          app:showAsAction="never"/>
+          android:showAsAction="never"/>
 </menu>

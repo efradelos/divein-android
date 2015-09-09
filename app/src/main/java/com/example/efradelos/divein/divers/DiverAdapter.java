@@ -32,15 +32,10 @@ public class DiverAdapter extends FirebaseListAdapter<Diver> {
     protected void populateView(View view, Diver diver) {
         ((TextView)view.findViewById(R.id.list_item_full_name)).setText(diver.getLastName() + ", " + diver.getFirstName());
         ((TextView)view.findViewById(R.id.list_item_year)).setText(diver.getYear());
-        String avatar = diver.getAvatar();
-        if (avatar != null) {
-            String avatarString = diver.getAvatar();
-            int commaIndex = avatarString.indexOf(',');
-            String decode = avatarString.substring(commaIndex);
-            byte[] decodedString = Base64.decode(decode, Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            ((ImageView) view.findViewById(R.id.list_item_avatar)).setImageBitmap(decodedByte);
-        }
+        Bitmap avatar = diver.getAvatar();
+        if (avatar == null) avatar = BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.profile);
+
+        ((ImageView) view.findViewById(R.id.list_item_avatar)).setImageBitmap(avatar);
 
     }
 }

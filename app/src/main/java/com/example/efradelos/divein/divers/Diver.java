@@ -1,49 +1,62 @@
 package com.example.efradelos.divein.divers;
 
+import android.graphics.Bitmap;
+import android.util.Log;
+
+import com.example.efradelos.divein.utils.ImageUtils;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 public class Diver {
-    String avatar;
-    String firstName;
-    String key;
-    String lastName;
-    String year;
+    public static final String FIREBASE_PATH = "divers";
 
-    public String getAvatar() {
-        return avatar;
+    private String mAvatarEncoded;
+    private Bitmap mAvatar;
+    private String mFirstName;
+    private String mKey;
+    private String mLastName;
+    private String mYear;
+
+    @JsonIgnore
+    public Bitmap getAvatar() { return mAvatar; }
+
+    @JsonIgnore
+    public void setAvatar(Bitmap avatar) {
+        mAvatar = avatar;
+        mAvatarEncoded = avatar != null ? ImageUtils.bitmapToUri(ImageUtils.extractThumbnail(avatar)) : null;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    @JsonGetter("avatar")
+    public String getAvatarEncoded() { return mAvatarEncoded; }
+
+    @JsonSetter("avatar")
+    public void setAvatarEncoded(String avatarEncoded) {
+        mAvatarEncoded = avatarEncoded;
+        mAvatar = avatarEncoded != null ? ImageUtils.uriToBitmap(avatarEncoded) : null;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
+    public String getFirstName() {return mFirstName;}
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.mFirstName = firstName;
     }
 
     public String getKey() {
-        return key;
+        return mKey;
     }
-
     public void setKey(String key) {
-        this.key = key;
+        mKey = key;
     }
 
     public String getLastName() {
-        return lastName;
+        return mLastName;
     }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    public void setLastName(String lastName) { mLastName = lastName; }
 
     public String getYear() {
-        return year;
+        return mYear;
     }
-
     public void setYear(String year) {
-        this.year = year;
+        mYear = year;
     }
 }

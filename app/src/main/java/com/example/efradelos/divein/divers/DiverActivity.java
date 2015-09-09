@@ -1,13 +1,13 @@
 package com.example.efradelos.divein.divers;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.efradelos.divein.R;
 
-public class DiverActivity extends AppCompatActivity {
+public class DiverActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

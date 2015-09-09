@@ -1,6 +1,6 @@
 package com.example.efradelos.divein.dives;
 
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.efradelos.divein.R;
-import com.example.efradelos.divein.dives.DiveAdapter;
 import com.firebase.client.Firebase;
 
 /**

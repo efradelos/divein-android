@@ -1,8 +1,8 @@
 package com.example.efradelos.divein;
 
+import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 import com.google.android.gms.common.SignInButton;
 
-public class LoginActivity extends AppCompatActivity implements AuthFragment.SignInListener {
+public class LoginActivity extends Activity implements AuthFragment.SignInListener {
 
     private final String LOG_TAG = "EFX";
     private final String AUTH_FRAGMENT = "AUTH_FRAGMENT";
@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity implements AuthFragment.Sig
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Firebase.setAndroidContext(this);
+        Firebase.setAndroidContext(getApplicationContext());
         Button signIn = (Button) findViewById(R.id.sign_in_button);
 
         mLoadingSpinner = (ProgressBar) findViewById(R.id.loading_spinner);
@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity implements AuthFragment.Sig
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.add(fragment, AUTH_FRAGMENT).commit();
    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
