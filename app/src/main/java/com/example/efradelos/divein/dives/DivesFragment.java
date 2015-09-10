@@ -9,6 +9,7 @@ import android.widget.ListView;
 
 import com.example.efradelos.divein.R;
 import com.firebase.client.Firebase;
+import com.firebase.client.Query;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -29,7 +30,7 @@ public class DivesFragment
 
         Firebase.setAndroidContext(getActivity());
 
-        Firebase ref = new Firebase("https://divein.firebaseio.com").child("dives");
+        Query ref = new Firebase("https://divein.firebaseio.com").child("dives").orderByChild("category");
         mDiveAdapter = new DiveAdapter(getActivity(), R.layout.list_item_dive, ref);
         mListViewDives = (ListView)rootView.findViewById(R.id.listview_dives);
         mListViewDives.setAdapter(mDiveAdapter);

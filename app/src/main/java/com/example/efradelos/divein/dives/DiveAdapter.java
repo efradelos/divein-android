@@ -1,6 +1,7 @@
 package com.example.efradelos.divein.dives;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -21,6 +22,11 @@ public class DiveAdapter extends FirebaseListAdapter<Dive> {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         View adapterView = super.getView(i, view, viewGroup);
+        if(i == 0 || getCount() > 0 && !(getItem(i - 1).getCategory().equals(getItem(i).getCategory()))) {
+            TextView category = (TextView)adapterView.findViewById(R.id.header);
+            category.setVisibility(View.VISIBLE);
+            category.setText(getItem(i).getCategory());
+        }
         return adapterView;
     }
 
