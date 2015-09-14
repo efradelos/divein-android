@@ -4,16 +4,19 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.efradelos.divein.Constants;
+import com.couchbase.lite.Emitter;
+import com.couchbase.lite.Mapper;
 import com.example.efradelos.divein.R;
-import com.firebase.client.Firebase;
+import com.example.efradelos.divein.data.DatabaseManager;
+import com.example.efradelos.divein.documents.Diver;
+
+import java.util.Map;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -32,17 +35,23 @@ public class DiversFragment
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_divers, container, false);
 
-        Firebase.setAndroidContext(getActivity());
+        com.couchbase.lite.View view = DatabaseManager.getView("divers", "1", new Mapper() {
+            @Override
+            public void map(Map<String, Object> document, Emitter emitter) {
+                if (Diver.TYPE.equals(document.get("type"))) {
+                    emitter.emit(document.get("type"), null);
+                }
+            }
+        });
 
-        Firebase ref = Constants.FIREBASE_REF.child("divers");
-        mDiverAdapter = new DiverAdapter(getActivity(), R.layout.list_item_diver, ref);
+        mDiverAdapter = new DiverAdapter(getActivity(), R.layout.list_item_diver, view.createQuery());
         mListViewDivers = (ListView)rootView.findViewById(R.id.listview_divers);
         mListViewDivers.setAdapter(mDiverAdapter);
         mListViewDivers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Diver diver = (Diver)parent.getItemAtPosition(position);
-            Uri uri = Uri.parse("content://com.example.efradelos.divein/divers/" + diver.getKey());
+            Uri uri = Uri.parse("content://com.example.efradelos.divein/divers/" + diver.getId());
             Intent intent = new Intent(getActivity(), DiverActivity.class).setData(uri);
             startActivity(intent);
             }
@@ -52,8 +61,14 @@ public class DiversFragment
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mDiverAdapter.cleanup();
+    public void onStart() {
+        super.onStart();
+        mDiverAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mDiverAdapter.stopListening();
     }
 }

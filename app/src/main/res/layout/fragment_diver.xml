@@ -82,11 +82,11 @@
                 />
 
         <Spinner
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/years_spinner"
                 android:focusable="false"
-                android:layout_gravity="fill_horizontal|bottom|top"/>
+                android:layout_gravity="fill_horizontal"/>
 
         <Button
                 android:layout_width="wrap_content"

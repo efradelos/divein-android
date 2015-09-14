@@ -1,4 +1,4 @@
-package com.example.efradelos.divein.divers;
+package com.example.efradelos.divein.documents;
 
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -6,17 +6,30 @@ import android.util.Log;
 import com.example.efradelos.divein.utils.ImageUtils;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-public class Diver {
-    public static final String FIREBASE_PATH = "divers";
+public class Diver extends DocumentBase {
+    public static final String TYPE = "diver";
 
     private String mAvatarEncoded;
     private Bitmap mAvatar;
     private String mFirstName;
-    private String mKey;
     private String mLastName;
     private String mYear;
+
+    public Diver() {}
+
+    public Diver(String firstName, String lastName, String year) {
+        mFirstName = firstName;
+        mLastName = lastName;
+        mYear = year;
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
+    }
 
     @JsonIgnore
     public Bitmap getAvatar() { return mAvatar; }
@@ -41,13 +54,6 @@ public class Diver {
         this.mFirstName = firstName;
     }
 
-    public String getKey() {
-        return mKey;
-    }
-    public void setKey(String key) {
-        mKey = key;
-    }
-
     public String getLastName() {
         return mLastName;
     }
@@ -59,4 +65,5 @@ public class Diver {
     public void setYear(String year) {
         mYear = year;
     }
+
 }
