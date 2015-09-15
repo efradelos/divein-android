@@ -1,4 +1,4 @@
-package com.example.efradelos.divein.divers;
+package com.example.efradelos.divein.data;
 
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -8,13 +8,12 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-public class Diver {
+public class Diver extends ModelBase {
     public static final String FIREBASE_PATH = "divers";
 
     private String mAvatarEncoded;
     private Bitmap mAvatar;
     private String mFirstName;
-    private String mKey;
     private String mLastName;
     private String mYear;
 
@@ -39,13 +38,6 @@ public class Diver {
     public String getFirstName() {return mFirstName;}
     public void setFirstName(String firstName) {
         this.mFirstName = firstName;
-    }
-
-    public String getKey() {
-        return mKey;
-    }
-    public void setKey(String key) {
-        mKey = key;
     }
 
     public String getLastName() {

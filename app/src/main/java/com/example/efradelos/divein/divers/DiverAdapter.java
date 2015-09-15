@@ -3,7 +3,6 @@ package com.example.efradelos.divein.divers;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -11,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.efradelos.divein.R;
 import com.example.efradelos.divein.adapters.FirebaseListAdapter;
+import com.example.efradelos.divein.data.Diver;
 import com.firebase.client.Query;
 
 /**
@@ -33,7 +33,7 @@ public class DiverAdapter extends FirebaseListAdapter<Diver> {
         ((TextView)view.findViewById(R.id.list_item_full_name)).setText(diver.getLastName() + ", " + diver.getFirstName());
         ((TextView)view.findViewById(R.id.list_item_year)).setText(diver.getYear());
         Bitmap avatar = diver.getAvatar();
-        if (avatar == null) avatar = BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.profile);
+        if (avatar == null) avatar = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.profile);
 
         ((ImageView) view.findViewById(R.id.list_item_avatar)).setImageBitmap(avatar);
 

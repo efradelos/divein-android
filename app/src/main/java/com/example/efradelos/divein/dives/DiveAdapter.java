@@ -1,14 +1,13 @@
 package com.example.efradelos.divein.dives;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.efradelos.divein.R;
 import com.example.efradelos.divein.adapters.FirebaseListAdapter;
+import com.example.efradelos.divein.data.Dive;
 import com.firebase.client.Query;
 
 /**

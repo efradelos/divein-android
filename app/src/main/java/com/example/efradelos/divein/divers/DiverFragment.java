@@ -4,14 +4,11 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,17 +21,14 @@ import android.widget.Spinner;
 
 import com.example.efradelos.divein.Constants;
 import com.example.efradelos.divein.R;
-import com.firebase.client.ChildEventListener;
+import com.example.efradelos.divein.data.Diver;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * A placeholder fragment containing a simple view.
