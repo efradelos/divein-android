@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.example.efradelos.divein.R;
 import com.example.efradelos.divein.adapters.FirebaseListAdapter;
 import com.example.efradelos.divein.data.Dive;
+import com.example.efradelos.divein.data.Diver;
 import com.firebase.client.Query;
 
 /**
@@ -30,7 +31,11 @@ public class DiveAdapter extends FirebaseListAdapter<Dive> {
     }
 
     @Override
+    protected boolean match(Dive model, String query) {
+        return model.getName().toLowerCase().contains(query);
+    }
 
+    @Override
     protected void populateView(View view, Dive dive) {
         ((TextView)view.findViewById(R.id.list_item_name)).setText(dive.getName());
     }

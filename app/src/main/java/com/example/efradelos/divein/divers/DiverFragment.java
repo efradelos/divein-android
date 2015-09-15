@@ -33,7 +33,10 @@ import java.io.InputStream;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DiverFragment extends Fragment implements ValueEventListener {
+public class DiverFragment
+        extends Fragment
+        implements ValueEventListener {
+
     private static final String LOG_TAG = "EFX";
     private static final int REQUEST_TAKE_PHOTO = 100;
     private static final int REQUEST_CHOOSE_PHOTO = 101;

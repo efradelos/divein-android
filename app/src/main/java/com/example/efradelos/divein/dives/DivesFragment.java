@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.efradelos.divein.R;
+import com.example.efradelos.divein.Searchable;
 import com.firebase.client.Firebase;
 import com.firebase.client.Query;
 
@@ -15,7 +16,8 @@ import com.firebase.client.Query;
  * A placeholder fragment containing a simple view.
  */
 public class DivesFragment
-        extends ListFragment {
+        extends ListFragment
+        implements Searchable {
 
     private DiveAdapter mDiveAdapter;
 
@@ -39,6 +41,11 @@ public class DivesFragment
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
+    }
+
+    @Override
+    public void search(CharSequence query) {
+        mDiveAdapter.setQuery(query);
     }
 
     @Override

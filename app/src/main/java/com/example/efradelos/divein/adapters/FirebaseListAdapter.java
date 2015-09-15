@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import com.example.efradelos.divein.data.ModelBase;
 import com.firebase.client.ChildEventListener;
@@ -14,22 +16,24 @@ import com.firebase.client.Query;
 
 import java.util.ArrayList;
 
-public abstract class FirebaseListAdapter<T extends ModelBase> extends BaseAdapter {
+public abstract class FirebaseListAdapter<T extends ModelBase> extends BaseAdapter implements Filterable {
 
     private final Class<T> mModelClass;
     private FirebaseListener mListener;
     private Query mRef;
     private int mLayout;
     private Activity mActivity;
-    private ArrayList<T> mModels;
-
+    private ArrayList<T> mOrigModels = new ArrayList<>();
+    private ArrayList<T> mFiltModels = new ArrayList<>();
+    private Filter mFilter;
+    private CharSequence mQuery = "";
 
     public FirebaseListAdapter(Activity activity, Class<T> modelClass, int modelLayout, Query ref) {
         mModelClass = modelClass;
         mLayout = modelLayout;
         mActivity = activity;
-        mModels = new ArrayList<>();
         mListener = new FirebaseListener();
+        mFilter = new ModelFilter();
         mRef = ref;
         start();
     }
@@ -49,15 +53,24 @@ public abstract class FirebaseListAdapter<T extends ModelBase> extends BaseAdapt
 
     @Override
     public int getCount() {
-        return mModels.size();
+        return mFiltModels.size();
     }
 
     @Override
-    public T getItem(int i) { return mModels.get(i); }
+    public T getItem(int i) { return mFiltModels.get(i); }
 
     @Override
     public long getItemId(int i) {
-        return mModels.get(i).hashCode();
+        return mFiltModels.get(i).hashCode();
+    }
+
+    public void setQuery(CharSequence query) {
+        mQuery = query;
+        filter();
+    }
+
+    protected void filter() {
+        getFilter().filter(mQuery);
     }
 
     @Override
@@ -73,15 +86,12 @@ public abstract class FirebaseListAdapter<T extends ModelBase> extends BaseAdapt
         return view;
     }
 
-    /**
-     * Each time the data at the given Firebase location changes, this method will be called for each item that needs
-     * to be displayed. The arguments correspond to the mLayout and mModelClass given to the constructor of this class.
-     * <p>
-     * Your implementation should populate the view using the data contained in the model.
-     *
-     * @param v     The view to populate
-     * @param model The object containing the data used to populate the view
-     */
+    @Override
+    public Filter getFilter() {
+        return mFilter;
+    }
+
+    protected abstract boolean match(T model, String query);
     protected abstract void populateView(View v, T model);
 
 
@@ -94,7 +104,8 @@ public abstract class FirebaseListAdapter<T extends ModelBase> extends BaseAdapt
             }
             T model = dataSnapshot.getValue(mModelClass);
             model.setKey(dataSnapshot.getKey());
-            mModels.add(index, model);
+            mOrigModels.add(index, model);
+            filter();
             notifyDataSetChanged();
         }
 
@@ -103,7 +114,8 @@ public abstract class FirebaseListAdapter<T extends ModelBase> extends BaseAdapt
             int index = getIndexForKey(snapshot.getKey());
             T model = snapshot.getValue(mModelClass);
             model.setKey(snapshot.getKey());
-            mModels.set(index, model);
+            mOrigModels.set(index, model);
+            filter();
             notifyDataSetChanged();
         }
 
@@ -124,7 +136,7 @@ public abstract class FirebaseListAdapter<T extends ModelBase> extends BaseAdapt
 
         private int getIndexForKey(String key) {
             int index = 0;
-            for (T  entry : mModels) {
+            for (T  entry : mOrigModels) {
                 if (entry.getKey().equals(key)) {
                     return index;
                 } else {
@@ -133,6 +145,38 @@ public abstract class FirebaseListAdapter<T extends ModelBase> extends BaseAdapt
             }
             throw new IllegalArgumentException("Key not found");
         }
+    }
+
+    private class ModelFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            FilterResults results = new FilterResults();
+
+            final ArrayList<T> nlist = new ArrayList<>();
+
+            String filterString = constraint.toString().toLowerCase();
+
+            for (T model : mOrigModels) {
+                if (FirebaseListAdapter.this.match(model, filterString)) {
+                    nlist.add(model);
+                }
+            }
+
+            results.values = nlist;
+            results.count = nlist.size();
+            return results;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            if(results.values != null) {
+                mFiltModels = (ArrayList<T>) results.values;
+                notifyDataSetChanged();
+            }
+        }
+
     }
 
 }

@@ -3,7 +3,7 @@
       tools:context="com.example.efradelos.divein.MainActivity">
     <item android:id="@+id/action_add"
           android:title="@string/action_add"
-          android:icon="@drawable/plus"
+          android:icon="@drawable/ic_add_circle_outline_white_24dp"
           android:orderInCategory="1"
           android:showAsAction="ifRoom">
         <menu>
@@ -15,6 +15,13 @@
                 android:title="@string/action_dives" />
         </menu>
     </item>
+
+    <item android:id="@+id/action_search"
+          android:title="@string/action_search"
+          android:icon="@drawable/ic_search"
+          android:showAsAction="ifRoom|collapseActionView"
+          android:actionViewClass="android.widget.SearchView" />
+
     <item android:id="@+id/action_settings"
           android:title="@string/action_settings"
           android:orderInCategory="100"

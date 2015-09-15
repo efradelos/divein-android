@@ -3,6 +3,7 @@
     <string name="action_dives">Dives</string>
     <string name="action_divers">Divers</string>
     <string name="action_add">Add</string>
+    <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
     <string name="action_sign_out">Sign Out</string>
 
@@ -13,7 +14,6 @@
     <string name="label_last_name">Last Name</string>
     <string name="label_year">Year</string>
     <string name="save">Save</string>
-    <string name="hello_world">Hello world!</string>
 
     <string-array name="label_years">
         <item>Senior</item>
@@ -21,5 +21,6 @@
         <item>Sophomore</item>
         <item>Freshman</item>
     </string-array>
+    <string name="title_activity_search">Search Activity</string>
 
 </resources>

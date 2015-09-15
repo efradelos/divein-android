@@ -4,6 +4,7 @@ import android.app.ListFragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ListView;
 
 import com.example.efradelos.divein.Constants;
 import com.example.efradelos.divein.R;
+import com.example.efradelos.divein.Searchable;
 import com.example.efradelos.divein.data.Diver;
 import com.firebase.client.Firebase;
 
@@ -18,12 +20,12 @@ import com.firebase.client.Firebase;
  * A placeholder fragment containing a simple view.
  */
 public class DiversFragment
-        extends ListFragment {
+        extends ListFragment
+        implements Searchable {
 
     private DiverAdapter mDiverAdapter;
 
-    public DiversFragment() {
-    }
+    public DiversFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,5 +54,10 @@ public class DiversFragment
     public void onDestroy() {
         super.onDestroy();
         mDiverAdapter.stop();
+    }
+
+    @Override
+    public void search(CharSequence query) {
+        if(mDiverAdapter != null) mDiverAdapter.setQuery(query);
     }
 }
